@@ -1,15 +1,7 @@
 :root {
   font: 16px / 1 sans-serif;
-
-  // SDG brand colors
-  --asphalt: #2f3737;
-  --bright-sky: #80ced2;
-  --lime: #b1d133;
-  --night-sky: #85577e;
-  --sand: #f7f0da;
-  --sea: #5a9090;
-  --sun: #d5562b;
-  --tangerine: #f99d1b;
+  font-family: 'Pixelify Sans', cursive;
+  background-color: #cce2ff;
 }
 
 html {
@@ -19,4 +11,87 @@ html {
 body {
   margin: 0;
   min-height: 100%;
+}
+
+button {
+  background-color: #a7a0f7;
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  font-family: 'Oswald', sans-serif;;
+  text-align: center;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #ccd1ff;
+  }
+}
+
+div, main, header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div {
+  padding: 0 2rem;
+}
+
+header {
+  padding-top: 2rem;
+  gap: .3rem;
+}
+
+h1 {
+  color: #a7a0f7;
+  font-size: clamp(1rem, 4rem, 6rem);
+  margin: 0;
+}
+
+h3 {
+  color: #7caad6;
+  margin: 0;
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+h4 {
+  color: #86d9de;
+  padding: 1.5rem;
+  font-size: 1.25rem;
+}
+
+img {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  z-index: -1;
+}
+
+section {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(2rem, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+article {
+  border: 1px solid #7caad6;
+  border-width: 0 0 3px 0;
+  text-align: center;
+  padding: .5rem;
+}
+
+.alphabet {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(1.5rem, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.giphy-embed {
+  position: absolute;
+  z-index: 1;
+  width: 30rem; 
+  height: 20rem;
 }
