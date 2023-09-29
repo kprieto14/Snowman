@@ -35,6 +35,7 @@ div, main, header {
 
 div {
   padding: 0 2rem;
+  position: relative;
 }
 
 header {
@@ -89,9 +90,11 @@ article {
   padding: 1rem;
 }
 
-.giphy-embed {
+.gif {
+  border: 0;
   position: absolute;
   z-index: 1;
-  width: 30rem; 
+  left: 3rem;
+  width: 35rem;
   height: 20rem;
 }
