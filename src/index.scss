@@ -24,6 +24,11 @@ button {
     cursor: pointer;
     background-color: #ccd1ff;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #ccd1ff;
+  }
 }
 
 div, main, header {
@@ -54,6 +59,10 @@ h3 {
   margin: 0;
   font-weight: 600;
   font-size: 2rem;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 h4 {

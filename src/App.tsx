@@ -1,37 +1,68 @@
-import React from 'react'
-//import step_0 from '../public/images/step_0.png'
-//import step_1 from '../public/images/step_1.png'
-//import step_2 from '../public/images/step_2.png'
-//import step_3 from '../public/images/step_3.png'
-//import step_4 from '../public/images/step_4.png'
-//import step_5 from '../public/images/step_5.png'
-//import step_6 from '../public/images/step_6.png'
+import React, { useState } from 'react'
+import step_0 from '../public/images/step_0.png'
+import step_1 from '../public/images/step_1.png'
+import step_2 from '../public/images/step_2.png'
+import step_3 from '../public/images/step_3.png'
+import step_4 from '../public/images/step_4.png'
+import step_5 from '../public/images/step_5.png'
+import step_6 from '../public/images/step_6.png'
 import step_7 from '../public/images/step_7.png'
 import snow from '../public/images/snow.gif'
-//import words from './words.json'
+import words from './words.json'
 
 export function App() {
   const abcList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-  //Create a "word" type?
-  const correctWord = ['', '', '', '', '', '', '']
+  
+  //This word is the hidden correct word that is created when new game button is hit
+  const [ correctWord, setCorrectWord ] = useState<string[]>(['', '', '', '', '', '', ''])
+  const [ classState, setClassState] = useState<string[]>(['hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden'])
+  const [ gameState, setGameState ] = useState<string>('inactive')
+
+  const photoStepArray = [step_0, step_1, step_2, step_3, step_4, step_5, step_6, step_7]
+  const [photoStepCount, setPhotoStepCount] = useState<number>(7)
 
   function handleNewGame() {
-    console.log("Clicked!")
+    //Update photo to start at step_0
+    setPhotoStepCount(0)
+    //Grabs a random word from JSON list
+    setCorrectWord(words[Math.floor(Math.random() * 1024)].toUpperCase().split(''))
+    
 
-    //Grab a random word from json list
-    //console log the new word to double check it works
-    //Assign its value to an array
-    //Will need to update something so that users know a game started
+    //Resets letters to hidden so that user does not need to refresh page
+    setClassState(['hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden'])
+    setGameState('active')
   }
 
-  function handleLetterCheck(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    console.log(event.target)
+  function handleLetterCheck(event: React.MouseEvent<HTMLButtonElement>, letterTile: string) {
+    //Check if the game is active or not
+    if(gameState === 'inactive') {
+      return
+    }
 
-    //Take in input from what the user clicked
-    //Compare it to the array of the chosen word
-    //Show the correct letters guessed in the correct spot
-    //Disable letters guessed whether it was correct or not
-    //Update snowman picture
+    //Compare letter chosen from user to the array
+    if(correctWord.includes(letterTile)) {
+      //Makes a copy of class state to be set during for loop
+      let copiedClassState = Array.from(classState)
+      //This counts if there is more than one of the same letter 
+      let multiplesOfSameLetterCount = 0
+
+      for(let count = 0; count < correctWord.length; count++) {
+        //If correct, Show the correct letters guessed in the correct spot by changing state in classState
+        if(correctWord[count] === letterTile) {
+          copiedClassState[count] = 'active'
+          
+          multiplesOfSameLetterCount++
+        }
+        //Update snowman picture according to how many double letters there are
+        setPhotoStepCount( photoStepCount + multiplesOfSameLetterCount )
+        setClassState(copiedClassState)
+      }
+    }
+
+    //Disable button guessed whether it was correct or not
+    event.currentTarget.disabled = true
+    //Check if game is over
+    //checkGameOver()
   }
 
   return (
@@ -46,13 +77,13 @@ export function App() {
       <main>
         <div>
           <iframe src={snow} className="gif"></iframe>
-          <img src={step_7} alt="Image of snowman" />
+          <img src={photoStepArray[photoStepCount]} alt="Image of snowman" />
         </div>
 
         <section>
         {correctWord.map((letter, letterIndex) => {
             return (
-              <article key={letterIndex}><h3>{letter}</h3></article>
+              <article key={letterIndex}><h3 className={classState[letterIndex] === 'hidden' ? 'hidden' : undefined}>{letter}</h3></article>
             )
           })
         }
@@ -61,9 +92,8 @@ export function App() {
         <section className='alphabet'>
           {abcList.map((letter, letterIndex) => {
             return (
-              <button key={letterIndex} onClick={handleLetterCheck}>{letter}</button>
-              )
-            })
+              <button key={letterIndex} onClick={(event) => handleLetterCheck(event, letter)}>{letter}</button>
+            )})
           }
         </section>
       </main>
