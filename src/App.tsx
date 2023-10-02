@@ -16,10 +16,13 @@ export function App() {
   //This word is the hidden correct word that is created when new game button is hit
   const [ correctWord, setCorrectWord ] = useState<string[]>(['', '', '', '', '', '', ''])
   const [ classState, setClassState] = useState<string[]>(['hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden'])
-  const [ gameState, setGameState ] = useState<string>('inactive')
+  const [ gameState, setGameState ] = useState<'inactive' | 'active' | 'won' | 'new'>('inactive')
 
   const photoStepArray = [step_0, step_1, step_2, step_3, step_4, step_5, step_6, step_7]
-  const [photoStepCount, setPhotoStepCount] = useState<number>(7)
+  const [ photoStepCount, setPhotoStepCount ] = useState<number>(7)
+
+  //Keeps track of how many guesses it took the user for fun
+  const [ guessCount, setGuessCount ] = useState<number>(0)
 
   function handleNewGame() {
     //Update photo to start at step_0
@@ -27,16 +30,18 @@ export function App() {
     //Grabs a random word from JSON list
     setCorrectWord(words[Math.floor(Math.random() * 1024)].toUpperCase().split(''))
     
-
     //Resets letters to hidden so that user does not need to refresh page
     setClassState(['hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden'])
-    setGameState('active')
+    //Resets letter buttons
+    setGameState('new')
   }
 
   function handleLetterCheck(event: React.MouseEvent<HTMLButtonElement>, letterTile: string) {
     //Check if the game is active or not
-    if(gameState === 'inactive') {
+    if(gameState === 'inactive' || gameState === 'won') {
       return
+    } else if(gameState === 'new') {
+      setGameState('active')
     }
 
     //Compare letter chosen from user to the array
@@ -49,20 +54,24 @@ export function App() {
       for(let count = 0; count < correctWord.length; count++) {
         //If correct, Show the correct letters guessed in the correct spot by changing state in classState
         if(correctWord[count] === letterTile) {
-          copiedClassState[count] = 'active'
+          copiedClassState[count] = 'visible'
           
           multiplesOfSameLetterCount++
         }
         //Update snowman picture according to how many double letters there are
         setPhotoStepCount( photoStepCount + multiplesOfSameLetterCount )
+        if(photoStepCount + multiplesOfSameLetterCount === 7) {
+          setGameState('won')
+        }
+
         setClassState(copiedClassState)
       }
     }
 
     //Disable button guessed whether it was correct or not
     event.currentTarget.disabled = true
-    //Check if game is over
-    //checkGameOver()
+    
+    setGuessCount(guessCount + 1)
   }
 
   return (
@@ -72,6 +81,8 @@ export function App() {
         <h2>
           <button onClick={handleNewGame}>New Game</button>
         </h2>
+        <p className={gameState === 'inactive' || gameState === 'won' ? 'hidden' : undefined}>Pick a letter, any letter</p>
+        <h3 className={gameState === 'won' ? undefined : 'hidden'}>Congratulations! You took <span>{guessCount}</span> guesses 👏🏼</h3>
       </header>
 
       <main>
@@ -92,7 +103,7 @@ export function App() {
         <section className='alphabet'>
           {abcList.map((letter, letterIndex) => {
             return (
-              <button key={letterIndex} onClick={(event) => handleLetterCheck(event, letter)}>{letter}</button>
+              <button key={letterIndex} disabled={gameState === 'new' || gameState === 'active' ? false : undefined} onClick={(event) => handleLetterCheck(event, letter)}>{letter}</button>
             )})
           }
         </section>
