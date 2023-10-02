@@ -15,8 +15,12 @@ body {
 
 button {
   background-color: #a7a0f7;
+  border: 2px white solid;
+  border-radius: 1rem;
+  box-shadow: .25rem .4rem .2rem #7caad6;
+  color: white;
   padding: .5rem 1rem;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-family: 'Oswald', sans-serif;;
   text-align: center;
 
@@ -25,10 +29,24 @@ button {
     background-color: #ccd1ff;
   }
 
+  &:active {
+    box-shadow: 4px 4px #a7a0f7;
+    transform: translateY(4px);
+  }
+
   &:disabled {
     cursor: not-allowed;
     background-color: #ccd1ff;
+    border: none;
+    box-shadow: none;
   }
+}
+
+header button {
+  border-radius: 4rem;
+  font-family: 'Pixelify Sans', cursive;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 div, main, header {
@@ -58,7 +76,7 @@ h3 {
   color: #7caad6;
   margin: 0;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 2.25rem;
 }
 
 h4 {

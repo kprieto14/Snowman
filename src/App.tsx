@@ -34,6 +34,8 @@ export function App() {
     setClassState(['hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden', 'hidden'])
     //Resets letter buttons
     setGameState('new')
+
+    setGuessCount(0)
   }
 
   function handleLetterCheck(event: React.MouseEvent<HTMLButtonElement>, letterTile: string) {
@@ -70,7 +72,7 @@ export function App() {
 
     //Disable button guessed whether it was correct or not
     event.currentTarget.disabled = true
-    
+
     setGuessCount(guessCount + 1)
   }
 
@@ -82,7 +84,7 @@ export function App() {
           <button onClick={handleNewGame}>New Game</button>
         </h2>
         <p className={gameState === 'inactive' || gameState === 'won' ? 'hidden' : undefined}>Pick a letter, any letter</p>
-        <h3 className={gameState === 'won' ? undefined : 'hidden'}>Congratulations! You took <span>{guessCount}</span> guesses 👏🏼</h3>
+        <h3 className={gameState === 'won' ? undefined : 'hidden'}>Congratulations! It took you <span>{guessCount}</span> guesses 👏🏼</h3>
       </header>
 
       <main>
