@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import FadeIn from 'react-fade-in';
 import step_0 from '../public/images/step_0.png'
 import step_1 from '../public/images/step_1.png'
 import step_2 from '../public/images/step_2.png'
@@ -87,7 +88,7 @@ export function App() {
         <h3 className={gameState === 'won' ? undefined : 'hidden'}>Congratulations! It took you <span>{guessCount}</span> guesses 👏🏼</h3>
       </header>
 
-      <main>
+      <FadeIn delay={150} transitionDuration={700}>
         <div>
           <iframe src={snow} className="gif"></iframe>
           <img src={photoStepArray[photoStepCount]} alt="Image of snowman" />
@@ -109,7 +110,7 @@ export function App() {
             )})
           }
         </section>
-      </main>
+      </FadeIn>
 
       <h4>Made with 🫶🏽 in Florida</h4>
 
